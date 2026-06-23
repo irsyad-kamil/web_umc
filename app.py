@@ -10,10 +10,10 @@ app = Flask(__name__)
 def home():
 
     connection = pymysql.connect(
-        host="localhost",
-        user="root",
-        password="21mei26@AIEA",
-        database="umc_tes_db"
+        host=os.getenv("DB_HOST"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        database=os.getenv("DB_NAME")
     )
 
     cursor = connection.cursor()
@@ -30,10 +30,10 @@ def home():
 def test_db():
 
     connection = pymysql.connect(
-        host="localhost",
-        user="root",
-        password="21mei26@AIEA",
-        database="umc_tes_db"
+        host=os.getenv("DB_HOST"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        database=os.getenv("DB_NAME")
     )
 
     cursor = connection.cursor()
@@ -48,10 +48,10 @@ def test_db():
 def daftar():
 
     connection = pymysql.connect(
-        host="localhost",
-        user="root",
-        password="21mei26@AIEA",
-        database="umc_tes_db"
+        host=os.getenv("DB_HOST"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        database=os.getenv("DB_NAME")
     )
 
     cursor = connection.cursor()
@@ -85,10 +85,10 @@ def daftar():
 def admin():
 
     connection = pymysql.connect(
-        host="localhost",
-        user="root",
-        password="21mei26@AIEA",
-        database="umc_tes_db"
+        host=os.getenv("DB_HOST"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        database=os.getenv("DB_NAME")
     )
 
     cursor = connection.cursor()
@@ -102,6 +102,29 @@ def admin():
     return render_template(
         "admin.html",
         peserta=hasil
+    )
+
+@app.route("/hapus/<id>")
+def hapus(id):
+
+    connection = pymysql.connect(
+        host=os.getenv("DB_HOST"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        database=os.getenv("DB_NAME")
+    )
+
+    cursor = connection.cursor()
+
+
+    cursor.execute(
+        "delete from peserta where id = (%s)",
+        (id,)
+    )
+    connection.commit()
+
+    return render_template(
+        "admin.html"
     )
 
 app.run(debug=True)
