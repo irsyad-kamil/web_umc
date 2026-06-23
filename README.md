@@ -1,2 +1,2 @@
 # web_umc
-Project website umc dari 0, mulai dari front-end dan back-end sekaligus
+Project website umc include front-end dan back-end
