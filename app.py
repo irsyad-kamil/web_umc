@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 from dotenv import load_dotenv
 import pymysql, os
 
@@ -67,7 +67,7 @@ def daftar():
         jenjang = request.form["jenjang"]
         
         cursor.execute(
-            "insert into peserta (nama_siswa, email_siswa, asal_sekolah, jenjang) values (%s, %s, %s, %s)",
+            "insert into peserta (nama, email, asal_sekolah, jenjang) values (%s, %s, %s, %s)",
             (siswa_1, email_siswa_1, sekolah, jenjang)
         )
 
@@ -104,6 +104,47 @@ def admin():
         peserta=hasil
     )
 
+@app.route("/edit/<id>", methods=["GET","POST"])
+def edit(id):
+    connection = pymysql.connect(
+        host=os.getenv("DB_HOST"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        database=os.getenv("DB_NAME")
+    )
+
+    cursor = connection.cursor()
+
+    if request.method == "GET":
+        cursor.execute(
+            "select * from peserta where id = %s",
+            (id,)
+        )
+        hasil = cursor.fetchone()
+        return render_template(
+            "edit.html",
+            peserta=hasil
+        )
+    
+    if request.method == "POST":
+        nama_baru = request.form["siswa_1"]
+        email_baru = request.form["email_siswa_1"]
+        sekolah_baru = request.form["asal_sekolah"]
+        jenjang_baru = request.form["jenjang"]
+        cursor.execute(
+            "update peserta " \
+            "set nama=%s, " \
+            "email=%s, " \
+            "asal_sekolah=%s, " \
+            "jenjang=%s " \
+            "where id=%s",
+            (nama_baru, email_baru, sekolah_baru, jenjang_baru, id)
+        )
+        connection.commit()
+        return redirect(
+            "/admin"
+        )
+
 @app.route("/hapus/<id>")
 def hapus(id):
 
@@ -116,15 +157,12 @@ def hapus(id):
 
     cursor = connection.cursor()
 
-
     cursor.execute(
         "delete from peserta where id = (%s)",
         (id,)
     )
     connection.commit()
 
-    return render_template(
-        "admin.html"
-    )
+    return redirect("/admin")
 
 app.run(debug=True)

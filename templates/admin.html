@@ -5,7 +5,8 @@
 
     {% for p in peserta %}
         {{ p[1] }} - {{ p[4] }}
-        <a href="/hapus/{{ p[0] }}">Hapus</a>
+        <a href="/edit/{{ p[0] }}"> Edit </a>
+        <a href="/hapus/{{ p[0] }}"> Hapus </a>
         <br>
     {% endfor %}
 </body>

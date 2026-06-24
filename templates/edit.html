@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h1>Halaman Edit Peserta {{ peserta[1] }}</h1>
+
+    <form action="/edit/{{ peserta[0] }}" method="post">
+        <h2>Peserta</h2>
+        <label>Nama Siswa 1</label>
+        <input type='text' name="siswa_1" value="{{ peserta[1] }}"></input>
+        <br>
+    
+        <label>Email Siswa 1</label>
+        <input type='email' name="email_siswa_1" value="{{ peserta[2] }}"></input>
+        <br>
+
+        <label>Nama Sekolah</label>
+        <input type='text' name="asal_sekolah" value="{{ peserta[3] }}"></input>
+        <br>
+
+        <label>Jenjang</label>
+        <select name="jenjang" value="{{ peserta[4] }}">
+            <option>SD</option>
+            <option>SMP</option>
+            <option>SMA</option>
+            <option>Perguruan Tinggi</option>
+        </select>
+        <br>
+
+        <button>Simpan</button>
+        
+    </form>
+</body>
+</html>
+
